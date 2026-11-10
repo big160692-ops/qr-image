@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tap to continue</title>
+  <style>
+    :root { color-scheme: dark; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #000;
+      color: #ddd;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    #gate {
+      box-sizing: border-box;
+      height: 100%;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      text-align: center;
+      cursor: pointer;
+    }
+    #gate button {
+      font: inherit;
+      font-size: 1.1rem;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: 1px solid #666;
+      background: #111;
+      color: inherit;
+    }
+    #scare {
+      display: none;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+    }
+    #scare img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    #status { margin: 0; }
+  </style>
+</head>
+<body>
+  <main id="gate">
+    <div>Your content is ready.</div>
+    <button id="go" type="button">Tap to continue</button>
+    <p id="status" role="status" aria-live="polite"></p>
+  </main>
+  <main id="scare">
+    <img src="jumpscare.gif" alt="Animated horror illustration">
+  </main>
+  <audio id="sound" preload="auto" playsinline src="jumpscare.mp3"></audio>
+  <script>
+    const gate = document.querySelector("#gate");
+    const sound = document.querySelector("#sound");
+    const status = document.querySelector("#status");
+
+    gate.addEventListener("click", () => {
+      sound.currentTime = 0;
+      sound.play().catch((error) => {
+        status.textContent = "The browser could not play the sound.";
+        console.error("Audio playback failed:", error);
+      });
+      gate.style.display = "none";
+      document.querySelector("#scare").style.display = "flex";
+    }, { once: true });
+  </script>
+</body>
+</html>
