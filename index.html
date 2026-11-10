@@ -20,42 +20,16 @@
       box-sizing: border-box;
     }
     img { display: block; height: auto; max-height: 75vh; max-width: 100%; }
-    button {
-      background: #b20d20;
-      border: 0;
-      border-radius: .5rem;
-      color: white;
-      cursor: pointer;
-      font: inherit;
-      font-weight: 700;
-      padding: .8rem 1.2rem;
-    }
-    button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
   </style>
 </head>
 <body>
   <img src="jumpscare.gif" alt="Animated horror illustration">
-  <button id="sound" type="button">Play sound effect</button>
   <audio id="audio" preload="auto" src="jumpscare.mp3"></audio>
   <script>
     const audio = document.querySelector("#audio");
-    const button = document.querySelector("#sound");
-    async function playAudio() {
-      try {
-        await audio.play();
-      } catch (error) {
-        button.textContent = "Tap to play sound effect";
-        return;
-      }
-      button.textContent = "Replay sound effect";
-    }
-
-    button.addEventListener("click", () => {
-      audio.currentTime = 0;
-      playAudio();
+    audio.play().catch((error) => {
+      console.warn("The browser blocked audio autoplay:", error);
     });
-
-    playAudio();
   </script>
 </body>
 </html>
