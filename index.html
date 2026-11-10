@@ -40,17 +40,22 @@
   <script>
     const audio = document.querySelector("#audio");
     const button = document.querySelector("#sound");
-    button.addEventListener("click", async () => {
-      audio.currentTime = 0;
+    async function playAudio() {
       try {
         await audio.play();
       } catch (error) {
-        button.textContent = "Could not play audio — tap to try again";
-        console.error("Audio playback failed:", error);
+        button.textContent = "Tap to play sound effect";
         return;
       }
       button.textContent = "Replay sound effect";
+    }
+
+    button.addEventListener("click", () => {
+      audio.currentTime = 0;
+      playAudio();
     });
+
+    playAudio();
   </script>
 </body>
 </html>
