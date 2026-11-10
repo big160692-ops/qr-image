@@ -18,17 +18,31 @@
       min-height: 100vh;
       padding: 1rem;
       box-sizing: border-box;
+      cursor: pointer;
     }
     img { display: block; height: auto; max-height: 75vh; max-width: 100%; }
+    p { margin: 0; text-align: center; }
   </style>
 </head>
 <body>
   <img src="jumpscare.gif" alt="Animated horror illustration">
-  <audio id="audio" preload="auto" src="jumpscare.mp3"></audio>
+  <p id="hint">Tap anywhere for sound</p>
+  <audio id="audio" preload="auto" playsinline src="jumpscare.mp3"></audio>
   <script>
     const audio = document.querySelector("#audio");
-    audio.play().catch((error) => {
-      console.warn("The browser blocked audio autoplay:", error);
+    const hint = document.querySelector("#hint");
+
+    audio.play().then(() => {
+      hint.hidden = true;
+    }).catch(() => {
+      document.addEventListener("click", () => {
+        audio.play().then(() => {
+          hint.hidden = true;
+        }).catch((error) => {
+          hint.textContent = "Sound could not play in this browser";
+          console.error("Audio playback failed:", error);
+        });
+      }, { once: true });
     });
   </script>
 </body>
